@@ -9,8 +9,10 @@ namespace ArduinoToggle
 {
     class Program
     {
-        // TODO: Mutes all microphones, not just the current one.
+        // TODO: Log time alongside error messages
         // TODO: Improve latency
+        // TODO: Separate serial comms from mic muting logic
+        // TODO: Mutes all microphones, not just the current one.
         // TODO: Collect stats on use? Time spent muted/unmuted, total mute/unmutes? Graph over time?
         static async Task Main()
         {
