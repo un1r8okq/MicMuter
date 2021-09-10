@@ -4,40 +4,34 @@ using System.Linq;
 
 namespace ArduinoToggle
 {
-    class SwitchInput
+    class SwitchListener
     {
-        private Action _switchClosed = () => { };
-        private Action _switchOpened = () => { };
+        private Action<bool> _switchChanged = (value) => { };
 
-        public void OnSwitchClosed(Action action) => _switchClosed = action;
+        public SwitchListener OnSwitchChanged(Action<bool> switchChangedAction)
+        {
+            _switchChanged = switchChangedAction;
+            return this;
+        }
 
-        public void OnSwitchOpened(Action action) => _switchOpened = action;
-
-        public void Run()
+        public void Listen()
         {
             var serialPort = GetSerialPort();
             serialPort.Open();
 
-            bool? switchWasClosed = null;
+            bool? prevState = null;
 
             while (true)
             {
                 var line = serialPort.ReadLine();
-                var switchIsClosed = line[0] == '1';
+                var currentState = line[0] == '1';
 
-                if (switchIsClosed != switchWasClosed)
+                if (currentState != prevState)
                 {
-                    if (switchIsClosed)
-                    {
-                        _switchClosed();
-                    }
-                    else
-                    {
-                        _switchOpened();
-                    }
+                    _switchChanged(currentState);
                 }
 
-                switchWasClosed = switchIsClosed;
+                prevState = currentState;
             }
         }
 

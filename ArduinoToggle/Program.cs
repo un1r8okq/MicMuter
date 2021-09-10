@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Media;
 using System.Threading.Tasks;
 using Windows.Media.Capture;
@@ -14,26 +15,29 @@ namespace ArduinoToggle
         // TODO: Collect stats on use? Time spent muted/unmuted, total mute/unmutes? Graph over time?
         static async Task Main()
         {
-            var unmutedSound = new SoundPlayer("audio/unmuted.wav");
-            var mutedSound = new SoundPlayer("audio/muted.wav");
+            var unmutedSound = new SoundPlayer(Path.Combine("audio", "unmuted.wav"));
+            var mutedSound = new SoundPlayer(Path.Combine("audio", "muted.wav"));
 
             var mediaCapture = new MediaCapture();
             await mediaCapture.InitializeAsync();
 
-            var switchInput = new SwitchInput();
-            switchInput.OnSwitchClosed(() =>
-            {
-                Console.WriteLine($"Muted");
-                mediaCapture.AudioDeviceController.Muted = true;
-                mutedSound.Play();
-            });
-            switchInput.OnSwitchOpened(() =>
-            {
-                Console.WriteLine($"Unmuted");
-                mediaCapture.AudioDeviceController.Muted = false;
-                unmutedSound.Play();
-            });
-            switchInput.Run();
+            new SwitchListener()
+                .OnSwitchChanged((switchIsClosed) =>
+                    {
+                        if (switchIsClosed)
+                        {
+                            Console.WriteLine("Muted");
+                            mediaCapture.AudioDeviceController.Muted = true;
+                            mutedSound.Play();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unmuted");
+                            mediaCapture.AudioDeviceController.Muted = false;
+                            unmutedSound.Play();
+                        }
+                    })
+                .Listen();
         }
     }
 }
