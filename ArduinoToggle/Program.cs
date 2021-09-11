@@ -1,8 +1,4 @@
 using System;
-using System.IO;
-using System.Media;
-using System.Threading.Tasks;
-using Windows.Media.Capture;
 
 namespace ArduinoToggle
 {
@@ -13,31 +9,12 @@ namespace ArduinoToggle
         // TODO: Improve latency
         // TODO: Mutes all microphones, not just the current one.
         // TODO: Collect stats on use? Time spent muted/unmuted, total mute/unmutes? Graph over time?
-        static async Task Main()
+        static void Main()
         {
-            var unmutedSound = new SoundPlayer(Path.Combine("audio", "unmuted.wav"));
-            var mutedSound = new SoundPlayer(Path.Combine("audio", "muted.wav"));
+            using var input = new FootSwitchInput();
+            using var output = new MicMuteToggler(input);
 
-            var mediaCapture = new MediaCapture();
-            await mediaCapture.InitializeAsync();
-
-            new SwitchListener()
-                .OnSwitchChanged((switchIsClosed) =>
-                    {
-                        if (switchIsClosed)
-                        {
-                            Console.WriteLine("Muted");
-                            mediaCapture.AudioDeviceController.Muted = true;
-                            mutedSound.Play();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Unmuted");
-                            mediaCapture.AudioDeviceController.Muted = false;
-                            unmutedSound.Play();
-                        }
-                    })
-                .Listen();
+            Console.ReadLine();
         }
     }
 }
