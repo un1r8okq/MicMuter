@@ -12,7 +12,7 @@ namespace ArduinoToggle
         private readonly SoundPlayer _unmutedSound;
         private MediaCapture _mediaCapture;
 
-        public MicMuteToggler(BooleanInput booleanInput)
+        public MicMuteToggler(IBooleanInput booleanInput)
         {
             _unmutedSound = new SoundPlayer(Path.Combine("audio", "unmuted.wav"));
             _mutedSound = new SoundPlayer(Path.Combine("audio", "muted.wav"));
@@ -21,13 +21,11 @@ namespace ArduinoToggle
             {
                 if (newValue)
                 {
-                    Console.WriteLine("Muting");
                     await SetMuted(true);
                     _mutedSound.Play();
                 }
                 else
                 {
-                    Console.WriteLine("Unmuting");
                     await SetMuted(false);
                     _unmutedSound.Play();
                 }

@@ -2,7 +2,7 @@ using System;
 
 namespace ArduinoToggle
 {
-    interface BooleanInput: IDisposable
+    interface IBooleanInput: IDisposable
     {
         public void OnValueChanged(Action<bool> valueChangedAction);
     }

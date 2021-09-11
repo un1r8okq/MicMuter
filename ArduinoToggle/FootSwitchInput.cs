@@ -1,3 +1,4 @@
+using ArduinoToggle.Events;
 using System;
 using System.IO.Ports;
 using System.Linq;
@@ -6,25 +7,27 @@ using System.Threading.Tasks;
 
 namespace ArduinoToggle
 {
-    class FootSwitchInput : BooleanInput
+    class FootSwitchInput : IBooleanInput
     {
         private readonly CancellationTokenSource _cancelTokenSource;
         private readonly SerialPort _serialPort;
+        private readonly EventCollector _eventCollector;
         private Action<bool> _valueChanged = (value) => { };
 
-        public FootSwitchInput()
+        public FootSwitchInput(EventCollector eventCollector)
         {
+            _eventCollector = eventCollector;
             _cancelTokenSource = new CancellationTokenSource();
+
             _serialPort = GetSerialPort();
             _serialPort.Open();
-            Task.Run(() => ListenToSwitch(), _cancelTokenSource.Token);
+            Task.Run(() => ListenToSwitch(), CancellationToken.None);
         }
 
         public void Dispose()
         {
-            Console.WriteLine($"Cancelling serial polling");
             _cancelTokenSource.Cancel();
-            Console.WriteLine($"Closing serial port {_serialPort.PortName}");
+            _eventCollector.Send(new SerialPortClosedEvent(_serialPort.PortName));
             _serialPort.Close();
         }
 
@@ -42,9 +45,9 @@ namespace ArduinoToggle
                 throw new MissingSerialPortException();
             }
 
-            Console.WriteLine($"Connecting to serial port {firstSerialPort}");
-
-            return new SerialPort(firstSerialPort, 9600);
+            var serialport = new SerialPort(firstSerialPort, 9600);
+            _eventCollector.Send(new SerialPortOpenedEvent(serialport.PortName));
+            return serialport;
         }
 
         private void ListenToSwitch()
@@ -54,10 +57,15 @@ namespace ArduinoToggle
             while (!_cancelTokenSource.IsCancellationRequested)
             {
                 var line = _serialPort.ReadLine();
+                if (line.Length == 0)
+                {
+                    continue;
+                }
                 var currentState = line[0] == '1';
 
                 if (currentState != prevState)
                 {
+                    _eventCollector.Send(currentState ? new SwitchClosedEvent() : new SwitchOpenedEvent());
                     _valueChanged(currentState);
                 }
 
