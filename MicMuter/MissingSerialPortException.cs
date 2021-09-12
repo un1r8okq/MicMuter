@@ -1,6 +1,6 @@
 using System;
 
-namespace ArduinoToggle
+namespace MicMuter
 {
     [Serializable]
     internal class MissingSerialPortException : Exception

@@ -1,6 +1,6 @@
 using System;
 
-namespace ArduinoToggle.Events
+namespace MicMuter.Events
 {
     abstract class Event
     {

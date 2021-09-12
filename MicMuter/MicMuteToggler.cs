@@ -4,7 +4,7 @@ using System.Media;
 using System.Threading.Tasks;
 using Windows.Media.Capture;
 
-namespace ArduinoToggle
+namespace MicMuter
 {
     class MicMuteToggler: IDisposable
     {

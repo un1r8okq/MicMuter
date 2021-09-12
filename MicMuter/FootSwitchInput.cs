@@ -1,11 +1,11 @@
-using ArduinoToggle.Events;
+using MicMuter.Events;
 using System;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ArduinoToggle
+namespace MicMuter
 {
     class FootSwitchInput : IBooleanInput
     {

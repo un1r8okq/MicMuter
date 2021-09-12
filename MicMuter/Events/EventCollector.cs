@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ArduinoToggle.Events
+namespace MicMuter.Events
 {
     class EventCollector
     {

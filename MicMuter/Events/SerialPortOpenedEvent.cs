@@ -1,4 +1,4 @@
-namespace ArduinoToggle.Events
+namespace MicMuter.Events
 {
     class SerialPortOpenedEvent : Event
     {

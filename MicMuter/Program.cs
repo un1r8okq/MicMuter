@@ -1,7 +1,7 @@
-using ArduinoToggle.Events;
+using MicMuter.Events;
 using System;
 
-namespace ArduinoToggle
+namespace MicMuter
 {
     class Program
     {
