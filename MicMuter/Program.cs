@@ -16,15 +16,19 @@ namespace MicMuter
 
             while (true)
             {
-                Console.WriteLine("Press q to quit or e to list events");
+                Console.WriteLine("Press q to quit, e to list events, or s to save events as CSV");
                 var keyInfo = Console.ReadKey();
                 if (keyInfo.Key == ConsoleKey.E)
                 {
-                    eventCollector.ListEvents();
+                    eventCollector.PrintEventsToConsole();
                 }
                 else if (keyInfo.Key == ConsoleKey.Q)
                 {
                     break;
+                }
+                else if (keyInfo.Key == ConsoleKey.S)
+                {
+                    eventCollector.PrintEventsToCsv();
                 }
                 Console.WriteLine();
             }

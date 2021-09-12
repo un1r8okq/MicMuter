@@ -12,10 +12,5 @@ namespace MicMuter.Events
             DateTimeUtc = DateTime.UtcNow;
             EventType = eventType;
         }
-
-        public override string ToString()
-        {
-            return $"{DateTimeUtc:yyyy-MM-ddTHH:mm:ss:FFFZ} {EventType}";
-        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MicMuter.Events
 {
@@ -12,12 +13,35 @@ namespace MicMuter.Events
             _events.Add(newEvent);
         }
 
-        public void ListEvents()
+        public void PrintEventsToConsole()
         {
             foreach (var e in _events)
             {
-                Console.WriteLine(e);
+                Console.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:FFFZ} {e.EventType}");
             }
+        }
+
+        public void PrintEventsToCsv()
+        {
+            var directoryPath = Path.Combine("C:", "temp", "MicMuter");
+            var filePath = Path.Combine(directoryPath, $"{DateTime.UtcNow:yyyy-MM-ddTHH-mm-ss}.csv");
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            using var fileStream = File.CreateText(filePath);
+            fileStream.WriteLine("dateTime,eventType");
+
+            foreach (var e in _events)
+            {
+                fileStream.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:FFFZ},{e.EventType}");
+            }
+
+            fileStream.Close();
+
+            Console.WriteLine($"Events written to {filePath}");
         }
     }
 }
