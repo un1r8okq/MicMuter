@@ -14,8 +14,8 @@ namespace MicMuter
 
         public MicMuteToggler(IBooleanInput booleanInput)
         {
-            _unmutedSound = new SoundPlayer(Path.Combine("audio", "unmuted.wav"));
-            _mutedSound = new SoundPlayer(Path.Combine("audio", "muted.wav"));
+            _unmutedSound = new SoundPlayer(Path.Combine("Audio", "unmuted.wav"));
+            _mutedSound = new SoundPlayer(Path.Combine("Audio", "muted.wav"));
 
             booleanInput.OnValueChanged(async (newValue) =>
             {

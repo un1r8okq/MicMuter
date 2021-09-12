@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="audio\unmuted.wav">
+    <None Update="Audio\unmuted.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="audio\muted.wav">
+    <None Update="Audio\muted.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
