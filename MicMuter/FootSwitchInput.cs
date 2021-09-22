@@ -1,7 +1,6 @@
 using MicMuter.Events;
 using System;
 using System.IO.Ports;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +37,7 @@ namespace MicMuter
 
         private SerialPort GetSerialPort()
         {
-            var firstSerialPort = SerialPort.GetPortNames().FirstOrDefault();
+            var firstSerialPort = SerialPort.GetPortNames()[0];
 
             if (firstSerialPort is null)
             {

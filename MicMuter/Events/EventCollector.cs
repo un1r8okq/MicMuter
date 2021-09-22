@@ -17,7 +17,7 @@ namespace MicMuter.Events
         {
             foreach (var e in _events)
             {
-                Console.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:FFFZ} {e.EventType}");
+                Console.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:fffZ} {e.EventType}");
             }
         }
 
@@ -36,7 +36,7 @@ namespace MicMuter.Events
 
             foreach (var e in _events)
             {
-                fileStream.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:FFFZ},{e.EventType}");
+                fileStream.WriteLine($"{e.DateTimeUtc:yyyy-MM-ddTHH:mm:ss:fff},{e.EventType}");
             }
 
             fileStream.Close();
